@@ -201,8 +201,8 @@ vim.keymap.set('n', '<M-l>', '<cmd>bnext<CR>', { desc = 'Go to next [B]uffer' })
 vim.keymap.set('n', '<M-d>', '<cmd>bdelete<CR>', { desc = 'Delete current [B]uffer' })
 
 -- Setting navigate keymaps for quickFix
-vim.keymap.set('n', '<M-j>', '<cmd>cprev<CR>', { desc = 'Go to previous qui[C]k fix item' })
-vim.keymap.set('n', '<M-k>', '<cmd>cnext<CR>', { desc = 'Go to next qui[C]' })
+vim.keymap.set('n', '<M-k>', '<cmd>cprev<CR>', { desc = 'Go to previous qui[C]k fix item' })
+vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>', { desc = 'Go to next qui[C]' })
 
 -- Setting lua executable mappings
 vim.keymap.set('n', '<space>x', ':.lua<CR>')
@@ -231,7 +231,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
   end,
 })
 
-vim.keymap.set('n', '<space>st', function()
+vim.keymap.set('n', '<space>tt', function()
   vim.cmd.vnew()
   vim.cmd.term()
   vim.cmd.wincmd 'J'
@@ -445,6 +445,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      vim.keymap.set('n', '<leader>sb', builtin.git_bcommits, { desc = '[S]earch git commits in current buffer' })
+      vim.keymap.set('n', '<leader>st', builtin.git_stash, { desc = '[S]earch the git stash items' })
+
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -650,7 +653,7 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -660,6 +663,7 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
         --
+        bashls = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -742,6 +746,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        bash = { 'shfmt', 'shellcheck' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -931,7 +936,25 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'python',
+        'query',
+        'vim',
+        'vimdoc',
+        'javascript',
+        'typescript',
+        'json',
+        'nginx',
+        'dockerfile',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
